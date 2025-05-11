@@ -120,16 +120,47 @@ export async function PATCH(
       },
       data: {
         ...values,
+        videoUrl: values.videoUrl || null, // ← вот это добавил
       }
     });
 
-    if (values.videoUrl) {
+    // if (values.videoUrl) { ----------------------------- текущий блок, который заменил:
+    //   const existingMuxData = await db.muxData.findFirst({
+    //     where: {
+    //       chapterId: params.chapterId,
+    //     }
+    //   });
+
+    //   if (existingMuxData) {
+    //     await Video.Assets.del(existingMuxData.assetId);
+    //     await db.muxData.delete({
+    //       where: {
+    //         id: existingMuxData.id,
+    //       }
+    //     });
+    //   }
+
+    //   const asset = await Video.Assets.create({
+    //     input: values.videoUrl,
+    //     playback_policy: "public",
+    //     test: false,
+    //   });
+
+    //   await db.muxData.create({
+    //     data: {
+    //       chapterId: params.chapterId,
+    //       assetId: asset.id,
+    //       playbackId: asset.playback_ids?.[0]?.id,
+    //     }
+    //   });
+    // }
+    if (typeof values.videoUrl === "string" && values.videoUrl.length > 0) {
       const existingMuxData = await db.muxData.findFirst({
         where: {
           chapterId: params.chapterId,
         }
       });
-
+    
       if (existingMuxData) {
         await Video.Assets.del(existingMuxData.assetId);
         await db.muxData.delete({
@@ -138,18 +169,27 @@ export async function PATCH(
           }
         });
       }
-
+    
       const asset = await Video.Assets.create({
         input: values.videoUrl,
         playback_policy: "public",
         test: false,
       });
-
+    
       await db.muxData.create({
         data: {
           chapterId: params.chapterId,
           assetId: asset.id,
           playbackId: asset.playback_ids?.[0]?.id,
+        }
+      });
+    }
+    
+    // если видео удалили — удалить связанную muxData
+    if (values.videoUrl === "" || values.videoUrl === null) {
+      await db.muxData.deleteMany({
+        where: {
+          chapterId: params.chapterId,
         }
       });
     }

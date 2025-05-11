@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: "Title is required",
+    message: "Название обязательно",
   }),
 });
 
@@ -41,9 +41,9 @@ const CreatePage = () => {
     try {
       const response = await axios.post("/api/courses", values);
       router.push(`/teacher/courses/${response.data.id}`);
-      toast.success("Course created");
+      toast.success("Курс создан");
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Что-то пошло не так");
     }
   }
 
@@ -51,10 +51,10 @@ const CreatePage = () => {
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
-          Name your course
+        Назовите свой курс
         </h1>
         <p className="text-sm text-slate-600">
-          What would you like to name your course? Don&apos;t worry, you can change this later.
+        Как бы вы хотели назвать свой курс? Не волнуйтесь, вы сможете изменить это позже.
         </p>
         <Form {...form}>
           <form
@@ -67,7 +67,7 @@ const CreatePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Course title
+                  Название курса
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -77,7 +77,7 @@ const CreatePage = () => {
                     />
                   </FormControl>
                   <FormDescription>
-                    What will you teach in this course?
+                  Чему вы будете обучать на этом курсе?
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -89,14 +89,14 @@ const CreatePage = () => {
                   type="button"
                   variant="ghost"
                 >
-                  Cancel
+                  Отмена
                 </Button>
               </Link>
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
               >
-                Continue
+                Продолжить
               </Button>
             </div>
           </form>

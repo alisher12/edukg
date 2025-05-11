@@ -33,11 +33,11 @@ export async function POST(
     });
 
     if (purchase) {
-      return new NextResponse("Already purchased", { status: 400 });
+      return new NextResponse("Уже куплено", { status: 400 });
     }
 
     if (!course) {
-      return new NextResponse("Not found", { status: 404 });
+      return new NextResponse("Не найдено", { status: 404 });
     }
 
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [

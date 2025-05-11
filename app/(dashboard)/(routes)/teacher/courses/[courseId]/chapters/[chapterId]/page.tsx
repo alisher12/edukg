@@ -41,7 +41,7 @@ const ChapterIdPage = async ({
   const requiredFields = [
     chapter.title,
     chapter.description,
-    chapter.videoUrl,
+    // chapter.videoUrl, ----------------------------------------------------УБИРАЕМ проверку видео
   ];
 
   const totalFields = requiredFields.length;
@@ -56,7 +56,7 @@ const ChapterIdPage = async ({
       {!chapter.isPublished && (
         <Banner
           variant="warning"
-          label="This chapter is unpublished. It will not be visible in the course"
+          label="Эта глава не опубликована. Она не будет видна в курсе."
         />
       )}
       <div className="p-6">
@@ -67,15 +67,15 @@ const ChapterIdPage = async ({
               className="flex items-center text-sm hover:opacity-75 transition mb-6"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to course setup
+                Вернуться к настройке курса
             </Link>
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-2xl font-medium">
-                  Chapter Creation
+                  Создание главы
                 </h1>
                 <span className="text-sm text-slate-700">
-                  Complete all fields {completionText}
+                  Заполните все поля {completionText}
                 </span>
               </div>
               <ChapterActions
@@ -93,7 +93,7 @@ const ChapterIdPage = async ({
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={LayoutDashboard} />
                 <h2 className="text-xl">
-                  Customize your chapter
+                  Настройте свою главу
                 </h2>
               </div>
               <ChapterTitleForm
@@ -111,7 +111,7 @@ const ChapterIdPage = async ({
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={Eye} />
                 <h2 className="text-xl">
-                  Access Settings
+                  Настройки доступа
                 </h2>
               </div>
               <ChapterAccessForm
@@ -125,7 +125,7 @@ const ChapterIdPage = async ({
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Video} />
               <h2 className="text-xl">
-                Add a video
+                Добавить видео
               </h2>
             </div>
             <ChapterVideoForm

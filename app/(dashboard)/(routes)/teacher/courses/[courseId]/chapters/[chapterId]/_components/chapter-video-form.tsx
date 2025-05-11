@@ -20,7 +20,7 @@ interface ChapterVideoFormProps {
 };
 
 const formSchema = z.object({
-  videoUrl: z.string().min(1),
+  videoUrl: z.string().optional(),
 });
 
 export const ChapterVideoForm = ({
@@ -37,32 +37,32 @@ export const ChapterVideoForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      toast.success("Chapter updated");
+      toast.success("Глава обновлена");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Что-то пошло не так");
     }
   }
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Chapter video
+        Видео главы
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && (
-            <>Cancel</>
+            <>Отмена</>
           )}
           {!isEditing && !initialData.videoUrl && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add a video
+              Добавить видео
             </>
           )}
           {!isEditing && initialData.videoUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit video
+              Редактировать видео
             </>
           )}
         </Button>
@@ -86,18 +86,18 @@ export const ChapterVideoForm = ({
             endpoint="chapterVideo"
             onChange={(url) => {
               if (url) {
-                onSubmit({ videoUrl: url });
+                onSubmit({ videoUrl: url || undefined });
               }
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-           Upload this chapter&apos;s video
+            Загрузить видео для этой главы
           </div>
         </div>
       )}
       {initialData.videoUrl && !isEditing && (
         <div className="text-xs text-muted-foreground mt-2">
-          Videos can take a few minutes to process. Refresh the page if video does not appear.
+          Обработка видео может занять несколько минут. Обновите страницу, если видео не появилось.
         </div>
       )}
     </div>

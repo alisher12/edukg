@@ -38,6 +38,6 @@ export async function PATCH(
     return NextResponse.json(unpublishedCourse);
   } catch (error) {
     console.log("[COURSE_ID_UNPUBLISH]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse("Внутренняя ошибка", { status: 500 });
   } 
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, Lock, PlayCircle } from "lucide-react";
+import { CheckCircle, Lock, PlayCircle, FileText } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ interface CourseSidebarItemProps {
   isCompleted: boolean;
   courseId: string;
   isLocked: boolean;
+  hasVideo: boolean;
 };
 
 export const CourseSidebarItem = ({
@@ -19,11 +20,19 @@ export const CourseSidebarItem = ({
   isCompleted,
   courseId,
   isLocked,
+  hasVideo,
 }: CourseSidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const Icon = isLocked ? Lock : (isCompleted ? CheckCircle : PlayCircle);
+  // const Icon = isLocked ? Lock : (isCompleted ? CheckCircle : PlayCircle); ---------- заменен иконка видео на текст
+  const Icon = isLocked
+  ? Lock
+  : isCompleted
+    ? CheckCircle
+    : hasVideo
+      ? PlayCircle
+      : FileText;
   const isActive = pathname?.includes(id);
 
   const onClick = () => {

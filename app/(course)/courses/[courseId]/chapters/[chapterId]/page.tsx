@@ -7,9 +7,11 @@ import { Banner } from "@/components/banner";
 import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
 
+
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
+import PianoPlayer from "./_components/PianoPlayer";
 
 const ChapterIdPage = async ({
   params
@@ -49,18 +51,18 @@ const ChapterIdPage = async ({
       {userProgress?.isCompleted && (
         <Banner
           variant="success"
-          label="You already completed this chapter."
+          label="Вы уже завершили эту главу."
         />
       )}
       {isLocked && (
         <Banner
           variant="warning"
-          label="You need to purchase this course to watch this chapter."
+          label="Для просмотра этой главы вам необходимо приобрести этот курс."
         />
       )}
       <div className="flex flex-col max-w-4xl mx-auto pb-20">
         <div className="p-4">
-          <VideoPlayer
+          {/* <VideoPlayer ---------------------- заменен плеер 
             chapterId={params.chapterId}
             title={chapter.title}
             courseId={params.courseId}
@@ -68,7 +70,20 @@ const ChapterIdPage = async ({
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
             completeOnEnd={completeOnEnd}
-          />
+          /> */}
+          {muxData?.playbackId && (
+            <div className="p-4">
+              <VideoPlayer
+                chapterId={params.chapterId}
+                title={chapter.title}
+                courseId={params.courseId}
+                nextChapterId={nextChapter?.id}
+                playbackId={muxData.playbackId}
+                isLocked={isLocked}
+                completeOnEnd={completeOnEnd}
+              />
+            </div>
+          )}
         </div>
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
@@ -76,12 +91,14 @@ const ChapterIdPage = async ({
               {chapter.title}
             </h2>
             {purchase ? (
-              <CourseProgressButton
-                chapterId={params.chapterId}
-                courseId={params.courseId}
-                nextChapterId={nextChapter?.id}
-                isCompleted={!!userProgress?.isCompleted}
-              />
+              <>
+                <CourseProgressButton
+                  chapterId={params.chapterId}
+                  courseId={params.courseId}
+                  nextChapterId={nextChapter?.id}
+                  isCompleted={!!userProgress?.isCompleted}
+                />
+              </>
             ) : (
               <CourseEnrollButton
                 courseId={params.courseId}
@@ -91,7 +108,14 @@ const ChapterIdPage = async ({
           </div>
           <Separator />
           <div>
-            <Preview value={chapter.description!} />
+            {!isLocked && (
+              <Preview value={chapter.description!} />
+            )}
+             {chapter.title === "Нотная грамота" && (
+                <div className="mt-8">
+                  <PianoPlayer />
+                </div>
+              )}
           </div>
           {!!attachments.length && (
             <>
